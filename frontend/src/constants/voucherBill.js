@@ -3,11 +3,11 @@ export const BILL_PAD_ROWS = 40;
 
 export const COMPANY = {
   name: 'SolarJi',
-  tagline: 'Solar Installation & Energy Solutions',
-  addressLines: ['Shop No. 5, Solar Market', 'Kanpur, Uttar Pradesh'],
-  address: 'Shop No. 5, Solar Market, Kanpur, Uttar Pradesh',
-  phones: ['+91 98765 43210', '+91 87654 32109'],
-  email: 'info@solarji.com',
+  tagline: 'Solar Installation & Energy Solutions (Demo)',
+  addressLines: ['Plot 12, Demo Solar Park', 'Sample City, Demo State'],
+  address: 'Plot 12, Demo Solar Park, Sample City, Demo State',
+  phones: ['+91 90000 00001', '+91 90000 00002'],
+  email: 'hello@demo-solar.example',
 };
 
 export function emptyVoucherRow() {

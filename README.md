@@ -561,50 +561,50 @@ solarji/
 │   ├── package.json
 │   ├── .env.example                  ← copy to .env
 │   └── src/
-│       ├── server.js                 Express bootstrap & global middleware
-│       ├── seed.js                   Admin user (from env) + sample stock
+│       ├── server.js                 DB connect + listen
+│       ├── app.js                    Express app + module wiring (composition root)
 │       ├── config/
-│       │   ├── db.js                 Connection, syncIndexes, DNS fallback
+│       │   ├── db.js
 │       │   └── cloudinary.js
-│       ├── constants/
-│       │   └── complaintCategories.js
-│       ├── middleware/
-│       │   ├── auth.js               JWT protect, RBAC, complaintsAccess
-│       │   └── upload.js             Multer → Sharp → Cloudinary pipeline
-│       ├── models/                   Mongoose schemas + index definitions
-│       ├── routes/                   HTTP handlers by domain (+ complaints.js)
-│       └── utils/
-│           ├── cache.js              Generic TTL cache
-│           ├── dashboardCache.js     Dashboard keys & invalidation
-│           ├── mail.js               Nodemailer complaint confirmations
-│           ├── pagination.js         parsePagination, paginationMeta
-│           ├── token.js              JWT signing & payload builder
-│           └── leads.js              buildLeadFilter (RBAC + search)
+│       ├── models/                   Shared Mongoose schemas
+│       ├── shared/
+│       │   ├── middleware/           JWT auth, upload pipeline
+│       │   ├── utils/                token, mail, cache, pagination, errors
+│       │   └── constants/
+│       ├── modules/                  Feature modules (routes → controller → service)
+│       │   ├── auth/
+│       │   ├── users/
+│       │   ├── leads/
+│       │   ├── stock/
+│       │   ├── complaints/
+│       │   ├── orders/
+│       │   ├── quotations/
+│       │   └── dashboard/
+│       └── seed/
+│           ├── seed.js               Demo users + mock CRM/stock data
+│           ├── demoUsers.js
+│           └── demoData.js
 │
 └── frontend/
     ├── package.json
     ├── .env.example                  ← copy to .env (VITE_API_URL required)
     ├── vite.config.js
     └── src/
-        ├── main.jsx                  Provider composition root
-        ├── App.jsx                   Route table + lazy loading
-        ├── config/
-        │   └── api.js                VITE_API_URL (required, no hardcoded fallback)
+        ├── main.jsx
+        ├── App.jsx
+        ├── config/api.js
         ├── api/
-        │   ├── axios.js              Base URL, auth & token interceptors
-        │   └── crypto.js             SHA-256 for login
-        ├── utils/session.js          JWT sessionStorage management
-        ├── constants/complaints.js   Categories & status badges
+        ├── constants/
+        │   ├── demoAccounts.js       Portfolio demo logins (shown on /login)
+        │   └── ...
         ├── context/
-        │   ├── AuthContext.jsx       Identity, role & complaint access helpers
-        │   └── DataCacheContext.jsx  Client cache & mutation invalidation
-        ├── components/               Layout, Sidebar, ProtectedRoute, PaginationBar
+        ├── components/
         └── pages/
-            ├── website/              Public marketing, quotation, RegisterComplaint
-            ├── auth/                 Login
-            ├── crm/                  Pipeline, leads, users, complaints
-            ├── stock/                Inventory & vouchers
-            └── admin/                System dashboard
+            ├── website/
+            ├── auth/                 Login + click-to-fill demo roles
+            ├── crm/
+            ├── stock/
+            └── admin/
 ```
 
 ---
@@ -657,7 +657,7 @@ SMTP_USER=<your-email>
 SMTP_PASS=<app-password>
 SMTP_FROM=noreply@yourcompany.com
 
-# Required only when running npm run seed
+# Optional — extra admin in addition to demo accounts
 SEED_ADMIN_EMAIL=admin@yourcompany.com
 SEED_ADMIN_PASSWORD=<strong-password>
 ```
@@ -670,15 +670,25 @@ VITE_API_URL=http://localhost:5000/api
 
 For production builds, set `VITE_API_URL` in `frontend/.env.production` or your CI/host build environment (e.g. `https://your-api.onrender.com/api`).
 
-### Database Seed
+### Portfolio demo seed
 
 ```bash
 cd backend
 npm run seed
 ```
 
-Creates the admin user from `SEED_ADMIN_*` env vars and sample stock items. Does **not** seed complaint handlers — enable **Service complaints access** per employee in User Management after login.
+Seeds four demo accounts (password **`Demo@123`** for all), sample stock, leads across pipeline stages, complaints, shop orders, and stock vouchers.
 
+| Role | Email |
+|------|--------|
+| Admin | `admin@demo.solarji.com` |
+| Manager | `manager@demo.solarji.com` |
+| Stock Manager | `stock@demo.solarji.com` |
+| Employee (complaints enabled) | `employee@demo.solarji.com` |
+
+Open `/login` — click a role card to fill credentials. Safe to re-run `npm run seed` to reset demo data.
+
+If `SEED_ADMIN_*` is set, that admin is also created (optional).
 ### Running Locally
 
 ```bash
@@ -722,14 +732,14 @@ cd frontend && npm run build
 | `SMTP_USER` | ✓† | — | SMTP username |
 | `SMTP_PASS` | ✓† | — | SMTP password / app password |
 | `SMTP_FROM` | | `SMTP_USER` | From address for outbound mail |
-| `SEED_ADMIN_EMAIL` | ✓‡ | — | Admin email for `npm run seed` |
-| `SEED_ADMIN_PASSWORD` | ✓‡ | — | Admin password for seed |
-| `SEED_ADMIN_NAME` | | `Admin` | Display name for seeded admin |
-| `SEED_ADMIN_PHONE` | | — | Phone for seeded admin |
+| `SEED_ADMIN_EMAIL` | | — | Optional extra admin email for seed |
+| `SEED_ADMIN_PASSWORD` | | — | Optional extra admin password for seed |
+| `SEED_ADMIN_NAME` | | `Admin` | Display name for optional seeded admin |
+| `SEED_ADMIN_PHONE` | | — | Phone for optional seeded admin |
 
 \* Required when using lead note image uploads.  
 † Required for complaint confirmation emails on public form submit.  
-‡ Required only when running `npm run seed`.
+‡ Optional when running `npm run seed` (demo accounts are always seeded).
 
 ### Frontend Variables
 

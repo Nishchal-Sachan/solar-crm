@@ -31,7 +31,7 @@ export default function StockDashboard() {
   const navigate = useNavigate();
   const { dashboardStock, fetchDashboardStock, isLoading } = useDataCache();
   const [refreshing, setRefreshing] = useState(false);
-  const { isAdmin } = useAuth();
+  const { isAdmin, canTransactStock } = useAuth();
 
   useEffect(() => {
     fetchDashboardStock().catch((err) => showApiError(err, 'Could not load stock dashboard.'));
@@ -82,10 +82,12 @@ export default function StockDashboard() {
             >
               <RefreshCw size={15} className={refreshing ? 'animate-spin' : ''} />
             </button>
-            {isAdmin && (
+            {canTransactStock && (
               <button onClick={()=>navigate('/stock/voucher/add')} className="btn-success"><Plus size={15}/> Purchase</button>
             )}
-            <button onClick={()=>navigate('/stock/voucher/sell')} className="btn-primary"><ShoppingCart size={15}/> Sell</button>
+            {canTransactStock && (
+              <button onClick={()=>navigate('/stock/voucher/sell')} className="btn-primary"><ShoppingCart size={15}/> Sell</button>
+            )}
           </div>
         </div>
 

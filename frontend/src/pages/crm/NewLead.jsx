@@ -74,7 +74,7 @@ export default function NewLead() {
               </div>
               <div>
                 <label className="label">City</label>
-                <input className="input" value={form.city} onChange={e => f('city', e.target.value)} placeholder="Kanpur" />
+                <input className="input" value={form.city} onChange={e => f('city', e.target.value)} placeholder="Sample City" />
               </div>
               <div className="md:col-span-2">
                 <label className="label">Address</label>

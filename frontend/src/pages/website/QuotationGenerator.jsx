@@ -116,7 +116,7 @@ export default function QuotationGenerator() {
   const [cName,  setCName]  = useState('');
   const [cPhone, setCPhone] = useState('');
   const [cAddr,  setCAddr]  = useState('');
-  const [cCity,  setCCity]  = useState('Kanpur');
+  const [cCity,  setCCity]  = useState('Sample City');
 
   /* system */
   const [cType, setCType] = useState('');       // residential | commercial
@@ -400,7 +400,7 @@ export default function QuotationGenerator() {
               <Lbl>System Type *</Lbl>
               <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:'.75rem' }}>
                 {[
-                  { id:'onGrid',  Icon:Zap,     label:'On-Grid',  sub:'Grid-tied. Kesco net metering. No battery.' },
+                  { id:'onGrid',  Icon:Zap,     label:'On-Grid',  sub:'Grid-tied. Utility net metering. No battery.' },
                   { id:'hybrid',  Icon:Battery, label:'Hybrid',   sub:'Grid + Battery. +₹50K per battery. Subsidy eligible (residential).' },
                   { id:'offGrid', Icon:Sun,     label:'Off-Grid', sub:'Fully off-grid. Battery powered. +₹50K per battery. No subsidy.' },
                 ].map(({ id, Icon, label, sub }) => (
@@ -583,10 +583,10 @@ export default function QuotationGenerator() {
               </div>
 
               <p style={{ fontSize:'.8rem', color:'#9ca3af' }}>
-                Shop No. 5, Solar Market, Naubasta Hamirpur Road, Kanpur Nagar — 208021
+                Plot 12, Demo Solar Park, Sample City, Demo State — 000000
               </p>
               <p style={{ fontSize:'.8rem', color:'#9ca3af', marginBottom:'2rem' }}>
-                +91 98765 43210 · +91 87654 32109 · info@solarji.com
+                +91 90000 00001 · +91 90000 00002 · hello@demo-solar.example
               </p>
 
               <div style={{ background:ORANGE, color:WHITE, borderRadius:16,
@@ -889,7 +889,7 @@ export default function QuotationGenerator() {
                     'Quotation valid for 15 days from date of issue.',
                     'Transportation and material loading/unloading charges are included in the quoted price.',
                     sType !== 'offGrid'
-                      ? 'Net Meter / Smart Meter installation depends on Kesco timeline after we file the application.'
+                      ? 'Net Meter / Smart Meter installation depends on utility timeline after we file the application.'
                       : null,
                     'Wi-Fi to be provided by client for remote monitoring system (if applicable).',
                     'Module cleaning is on client\'s scope.',
@@ -941,7 +941,7 @@ export default function QuotationGenerator() {
                                border:`2px solid ${ORANGE}` }}/>
                     <div>
                       <p style={{ fontWeight:900, color:BLACK, fontSize:'.85rem' }}>SolarJi</p>
-                      <p style={{ fontSize:'.7rem', color:'#9ca3af' }}>Solar Energy Solutions, Kanpur</p>
+                      <p style={{ fontSize:'.7rem', color:'#9ca3af' }}>Solar Energy Solutions (Demo)</p>
                     </div>
                   </div>
                 </div>
@@ -954,7 +954,7 @@ export default function QuotationGenerator() {
                   Thanks &amp; Regards — SolarJi
                 </p>
                 <p style={{ fontSize:'.75rem', color:'#9ca3af' }}>
-                  +91 98765 43210 · info@solarji.com · Kanpur, Uttar Pradesh &nbsp;|&nbsp; देश चलेगा सूरज से ☀️
+                  +91 90000 00001 · hello@demo-solar.example · Sample City &nbsp;|&nbsp; Portfolio demo ☀️
                 </p>
               </div>
             </div>

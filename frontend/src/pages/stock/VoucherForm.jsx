@@ -15,7 +15,7 @@ const todayISO = () => new Date().toISOString().split('T')[0];
 export default function VoucherForm({ type }) {
   const navigate = useNavigate();
   const { addStockVoucher } = useDataCache();
-  const { user, isAdmin } = useAuth();
+  const { user, canTransactStock } = useAuth();
   const [stockItems, setStockItems] = useState([]);
   const [itemsLoading, setItemsLoading] = useState(true);
   const [party, setParty] = useState('');
@@ -33,8 +33,8 @@ export default function VoucherForm({ type }) {
   const addressLabel = isSell ? 'Customer Address' : 'Supplier Address';
 
   useEffect(() => {
-    if (type === 'ADD' && !isAdmin) {
-      toast.error('Only admins can record purchases');
+    if (!canTransactStock) {
+      toast.error('Stock access required to record vouchers');
       navigate('/stock');
       return;
     }
@@ -43,7 +43,7 @@ export default function VoucherForm({ type }) {
       .then((res) => setStockItems(res.data.items || []))
       .catch((err) => showApiError(err, 'Could not load stock items for voucher.'))
       .finally(() => setItemsLoading(false));
-  }, [type, isAdmin, navigate]);
+  }, [canTransactStock, navigate]);
 
   const handleItemChange = (idx, itemId) => {
     const stockItem = stockItems.find((i) => i._id === itemId);

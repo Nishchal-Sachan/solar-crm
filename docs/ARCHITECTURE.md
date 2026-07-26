@@ -110,52 +110,25 @@ The system is a **layered monolith**: one Express API server, one React SPA, one
 
 ```
 solarji/
-├── README.md                    # Project overview & quick start
-├── env.example                  # Consolidated env reference
+├── README.md
 ├── docs/
-│   ├── ARCHITECTURE.md          # This file
-│   └── PROJECT_HISTORY.md       # Development story & optimizations
-├── start.bat                    # Windows: start backend + frontend
-│
-├── backend/
-│   ├── package.json
-│   ├── .htaccess                # cPanel/Passenger deploy
-│   └── src/
-│       ├── server.js            # Express entry, middleware, route mounting
-│       ├── seed.js              # Admin user (from env) + sample stock
-│       ├── config/
-│       │   ├── db.js            # Mongo connect + syncIndexes + DNS fix
-│       │   └── cloudinary.js
-│       ├── middleware/
-│       │   ├── auth.js          # JWT protect, RBAC helpers
-│       │   └── upload.js        # Image upload pipeline
-│       ├── models/              # Mongoose schemas + indexes
-│       ├── routes/              # API handlers
-│       └── utils/               # Shared logic
-│
-└── frontend/
-    ├── package.json
-    ├── vite.config.js
-    ├── tailwind.config.js
-    ├── .env.example
-    └── src/
-        ├── main.jsx             # Providers: Router → Auth → DataCache
-        ├── App.jsx              # Routes + lazy loading
-        ├── api/
-        │   ├── axios.js         # Base URL, interceptors
-        │   └── crypto.js        # SHA-256 for login
-        ├── utils/session.js     # JWT in sessionStorage
-        ├── context/
-        │   ├── AuthContext.jsx
-        │   └── DataCacheContext.jsx
-        ├── components/
-        └── pages/
-            ├── website/         # Public
-            ├── auth/
-            ├── crm/
-            ├── stock/
-            └── admin/
+├── backend/src/
+│   ├── server.js            # listen + connectDB
+│   ├── app.js               # Express + feature module wiring
+│   ├── config/
+│   ├── models/
+│   ├── shared/              # middleware, utils, constants
+│   ├── modules/             # auth, users, leads, stock, …
+│   │   └── <feature>/
+│   │       ├── index.js           factory (DI wiring)
+│   │       ├── *.routes.js
+│   │       ├── *.controller.js
+│   │       └── *.service.js
+│   └── seed/                # demo users + mock data
+└── frontend/src/            # React SPA (pages by domain)
 ```
+
+Each backend feature is **routes → controller → service**. `app.js` injects models and shared deps into module factories (no DI framework).
 
 ---
 
@@ -181,13 +154,13 @@ HTTP Request
 
 | Mount path | File | Responsibility |
 |------------|------|----------------|
-| `/api/auth` | `routes/auth.js` | Login, me, refresh |
-| `/api/users` | `routes/users.js` | User CRUD, assignees, points reset |
-| `/api/leads` | `routes/leads.js` | Lead CRUD, stages, notes, stats, bulk delete |
-| `/api/stock` | `routes/stock.js` | Items, vouchers, bulk stock updates |
-| `/api/quotations` | `routes/quotations.js` | Quotation templates |
-| `/api/complaints` | `routes/complaints.js` | Public register + CRM inbox |
-| `/api/dashboard` | `routes/dashboard.js` | Aggregated CRM/Admin/Stock dashboards |
+| `/api/auth` | `modules/auth` | Login, me, refresh |
+| `/api/users` | `modules/users` | User CRUD, assignees, points reset |
+| `/api/leads` | `modules/leads` | Lead CRUD, stages, notes, stats, bulk delete |
+| `/api/stock` | `modules/stock` | Items, vouchers, bulk stock updates |
+| `/api/quotations` | `modules/quotations` | Quotation templates |
+| `/api/complaints` | `modules/complaints` | Public register + CRM inbox |
+| `/api/dashboard` | `modules/dashboard` | Aggregated CRM/Admin/Stock dashboards |
 | `/api/health` | `server.js` | Health check |
 
 ### 5.3 Middleware Details

@@ -23,7 +23,7 @@ export default function VoucherList() {
   const [summary, setSummary] = useState({ purchase: 0, sales: 0 });
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const { canTransactStock, isAdmin } = useAuth();
+  const { canTransactStock } = useAuth();
   const { invalidateDashboardStock } = useDataCache();
 
   useEffect(() => {
@@ -97,7 +97,7 @@ export default function VoucherList() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <h1 className="text-2xl font-bold text-gray-900">Voucher History</h1>
           <div className="flex gap-2">
-            {isAdmin && (
+            {canTransactStock && (
               <button onClick={() => navigate('/stock/voucher/add')} className="btn-success gap-2">
                 <Package className="w-4 h-4" /> Purchase
               </button>
@@ -108,8 +108,8 @@ export default function VoucherList() {
           </div>
         </div>
 
-        <div className={`grid ${isAdmin ? 'grid-cols-2' : 'grid-cols-1'} gap-4 mb-6 max-[480px]:grid-cols-1`}>
-          {isAdmin && (
+        <div className={`grid ${canTransactStock ? 'grid-cols-2' : 'grid-cols-1'} gap-4 mb-6 max-[480px]:grid-cols-1`}>
+          {canTransactStock && (
             <div className="card border-l-4 border-green-500">
               <p className="text-sm text-gray-500">Total Purchases</p>
               <p className="text-2xl font-bold text-green-600">₹{summary.purchase.toLocaleString('en-IN', { maximumFractionDigits: 0 })}</p>
@@ -121,7 +121,7 @@ export default function VoucherList() {
           </div>
         </div>
 
-        {isAdmin && (
+        {canTransactStock && (
           <div className="card mb-4 flex gap-3">
             {['', 'ADD', 'SELL'].map(t => (
               <button
@@ -184,7 +184,7 @@ export default function VoucherList() {
                             >
                               <Printer className="w-3.5 h-3.5" />
                             </button>
-                            {canTransactStock && (v.type !== 'ADD' || isAdmin) && (
+                            {canTransactStock && (
                               <button
                                 type="button"
                                 onClick={() => handleDelete(v)}
@@ -285,7 +285,7 @@ export default function VoucherList() {
                   >
                     <Printer className="w-4 h-4" /> Full Preview
                   </button>
-                  {canTransactStock && (selected.type !== 'ADD' || isAdmin) && (
+                  {canTransactStock && (
                     <button
                       type="button"
                       onClick={() => handleDelete(selected)}

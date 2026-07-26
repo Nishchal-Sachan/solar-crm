@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { COMPLAINT_CATEGORIES } = require('../constants/complaintCategories');
+const { COMPLAINT_CATEGORIES } = require('../shared/constants/complaintCategories');
 
 const STATUSES = ['Open', 'In Progress', 'Resolved', 'Closed'];
 

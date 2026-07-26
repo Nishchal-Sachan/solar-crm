@@ -35,7 +35,7 @@ export default function Shop() {
   const [cName, setCName] = useState('');
   const [cPhone, setCPhone] = useState('');
   const [cAddr, setCAddr] = useState('');
-  const [cCity, setCCity] = useState('Kanpur');
+  const [cCity, setCCity] = useState('Sample City');
   const [cNotes, setCNotes] = useState('');
 
   useEffect(() => {
