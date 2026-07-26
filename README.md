@@ -768,10 +768,11 @@ cd frontend && npm run build
 | Setting | Value |
 |---------|-------|
 | Root directory | `backend` |
-| Build command | `npm install` |
+| Build command | `npm install` *(or `npm install; npm run build` — build is a no-op)* |
 | Start command | `npm start` |
 | Health check | `GET /api/health` |
 
+> If the build fails with **Missing script: "build"**, either set Build Command to `npm install` only, or pull the latest backend `package.json` that includes a no-op `build` script.
 Configure all backend environment variables in the Render dashboard (see [Configuration Reference](#configuration-reference)). Add your frontend domain to `CLIENT_URL`. Set SMTP vars for complaint emails.
 
 ### Frontend
