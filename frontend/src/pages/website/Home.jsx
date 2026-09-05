@@ -64,6 +64,14 @@ export default function Home() {
 
   return (
     <div style={{ fontFamily:"'Plus Jakarta Sans',sans-serif", color:BLACK, background:WHITE }}>
+      
+      {/* Demo Notice Banner */}
+      <div style={{ background: '#fffbeb', borderBottom: '1px solid #fde68a', padding: '12px 20px', textAlign: 'center', fontSize: '0.9rem', color: '#92400e', fontWeight: 600 }}>
+        This is a portfolio demo. The original client project can be found at{' '}
+        <a href="https://solarji.co.in/" target="_blank" rel="noopener noreferrer" style={{ color: '#b45309', textDecoration: 'underline' }}>
+          solarji.co.in
+        </a>.
+      </div>
 
       <header style={{ position:'sticky', top:0, zIndex:50, background:'rgba(255,255,255,.92)', backdropFilter:'blur(16px)', borderBottom:'1px solid rgba(0,0,0,.07)' }}>
         <nav style={{ maxWidth:1200, margin:'0 auto', padding:'0 clamp(0.75rem, 4vw, 1.5rem)' }}>
